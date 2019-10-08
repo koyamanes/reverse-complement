@@ -29,6 +29,11 @@
 }
 
 .sequence-form {
+  resize: none;
   height: 20vh;
   width: 80vw;
+}
+
+.reversed {
+  background-color: #d0d3d8;
 }
