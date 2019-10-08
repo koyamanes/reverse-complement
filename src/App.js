@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import './App.css';
 
 export default class App extends Component {
@@ -6,7 +8,8 @@ export default class App extends Component {
     super(props);
     this.state = {
       query: '',
-      queryType: false
+      queryType: false,
+      copied: false
     };
   }
 
@@ -31,7 +34,7 @@ export default class App extends Component {
 
   queryTypeSet(queryType) {
     return (
-      <p>
+      <p>Sequence Type : 
         <input type="radio" name="query-type" checked={queryType ? false : true} 
           onClick={(e) => {
             this.setState({
@@ -114,11 +117,25 @@ export default class App extends Component {
         </header>
         <article className="App-article">
           <p>Input your query sequence (5' -> 3')</p>
-          {this.queryTypeSet(queryType)}
           {this.querySet(query, queryType)}
-          <p>Reverse complement (5' -> 3')</p>
-          <textarea className="sequence-form reversed" value={reversed} readonly spellcheck="false"/>
           {this.sequencePropertySet(query, queryType)}
+          <Tabs>
+            <TabList>
+              <Tab className="tabarea">Reverse Complement</Tab>
+              <Tab className="tabarea">Settings</Tab>
+            </TabList>
+            <TabPanel className="tabcontents">
+              <p>Reverse complement (5' -> 3')</p>
+              <textarea className="sequence-form reversed" value={reversed} readonly spellcheck="false"/>
+              <CopyToClipboard text={reversed} onCopy={() => this.setState({copied: true})}>
+                <button>Copy to clipboard</button>
+              </CopyToClipboard>
+            </TabPanel>
+            <TabPanel className="tabcontents">
+              <p>Settings</p>
+              {this.queryTypeSet(queryType)}
+            </TabPanel>
+          </Tabs>
         </article>
       </div>
     );
